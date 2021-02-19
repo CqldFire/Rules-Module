@@ -14,7 +14,7 @@ class Rules_Module extends Module {
 		
 		$name = 'Rules';
 		$author = '<a href="https://coldfiredzn.com" target="_blank" rel="nofollow noopener">Coldfire</a>';
-		$module_version = '1.5.6';
+		$module_version = '1.5.7';
 		$nameless_version = '2.0.0-pr9';
 		
 		parent::__construct($this, $name, $author, $module_version, $nameless_version);
@@ -42,7 +42,7 @@ class Rules_Module extends Module {
 		$queries = new Queries();
 		
 		try {
-			$data = $queries->createTable("rules_settings", " `id` int(11) NOT NULL AUTO_INCREMENT, `name` varchar(20) NOT NULL, `value` varchar(1000000) NOT NULL, PRIMARY KEY (`id`)", "ENGINE=$engine DEFAULT CHARSET=$charset");
+			$data = $queries->createTable("rules_settings", " `id` int(11) NOT NULL AUTO_INCREMENT, `name` varchar(20) NOT NULL, `value` varchar(65535) NOT NULL, PRIMARY KEY (`id`)", "ENGINE=$engine DEFAULT CHARSET=$charset");
 			$data = $queries->createTable("rules_catagories", " `id` int(11) NOT NULL AUTO_INCREMENT, `name` varchar(96) NOT NULL, `icon` varchar(96) NOT NULL, `rules` longtext NOT NULL, PRIMARY KEY (`id`)", "ENGINE=$engine DEFAULT CHARSET=$charset");
 			$data = $queries->createTable("rules_buttons", " `id` int(11) NOT NULL AUTO_INCREMENT, `name` varchar(96) NOT NULL, `link` varchar(96) NOT NULL, PRIMARY KEY (`id`)", "ENGINE=$engine DEFAULT CHARSET=$charset");
 		} catch(Exception $e){
