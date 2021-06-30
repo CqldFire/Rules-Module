@@ -6,26 +6,9 @@
  *	Using code from the vote module by Partydragen and Samerton
  */
  
-if($user->isLoggedIn()){
-	if(!$user->canViewACP()){
-		// No
-		Redirect::to(URL::build('/'));
-		die();
-	}
-	if(!$user->isAdmLoggedIn()){
-		// Needs to authenticate
-		Redirect::to(URL::build('/panel/auth'));
-		die();
-	} else {
-		if(!$user->hasPermission('admincp.rules')){
-			require_once(ROOT_PATH . '/404.php');
-			die();
-		}
-	}
-} else {
-	// Not logged in
-	Redirect::to(URL::build('/login'));
-	die();
+if(!$user->handlePanelPageLoad('admincp.rules')) {
+    require_once(ROOT_PATH . '/403.php');
+    die();
 }
 
 define('PAGE', 'panel');
