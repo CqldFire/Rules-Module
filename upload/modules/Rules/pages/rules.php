@@ -20,8 +20,8 @@ foreach($catagories as $catagory){
     $catagories_array[] = array(
 	'id' => Output::getClean($catagory->id),
         'name' => Output::getClean($catagory->name),
-        'icon' => (($catagory->all_html == 0) ? Output::getPurified(htmlspecialchars_decode($catagory->icon)) : htmlspecialchars_decode($catagory->icon)),
-        'rules' => (($catagory->all_html == 0) ? Output::getPurified(htmlspecialchars_decode($catagory->rules)) : htmlspecialchars_decode($catagory->rules))
+        'icon' => Output::getPurified(Output::getDecoded($catagory->icon)),
+        'rules' => Output::getPurified(Output::getDecoded($catagory->rules))
     );
 }
 
@@ -37,7 +37,7 @@ foreach($buttons as $button){
 	
 $smarty->assign(array(
 	'RULES' => $rules_language->get('rules', 'rules'),
-	'MESSAGE' => (($rules_message->all_html == 0) ? Output::getPurified(htmlspecialchars_decode($rules_message)) : htmlspecialchars_decode($rules_message)),
+	'MESSAGE' => Output::getPurified(Output::getDecoded($rules_message)),
 	'CATAGORIES' => $catagories_array,
 	'BUTTONS' => $buttons_array
 ));
