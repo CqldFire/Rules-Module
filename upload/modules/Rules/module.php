@@ -14,7 +14,7 @@ class Rules_Module extends Module {
 		
 		$name = 'Rules';
 		$author = '<a href="https://coldfiredzn.com" target="_blank" rel="nofollow noopener">Coldfire</a>';
-		$module_version = '1.7.4';
+		$module_version = '1.7.5';
 		$nameless_version = '2.0.0-pr12';
 		
 		parent::__construct($this, $name, $author, $module_version, $nameless_version);
