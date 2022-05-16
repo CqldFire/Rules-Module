@@ -117,9 +117,9 @@ class Rules_Module extends Module {
                 AssetTree::TINYMCE,
             ]);
         }
-        PermissionHandler::registerPermissions('Rules', array(
+        PermissionHandler::registerPermissions('Rules', [
             'admincp.rules' => $this->_rules_language->get('rules', 'rules')
-        ));
+        ]);
         
         $cache->setCache('nav_location');
         if(!$cache->isCached('rules_location')){
