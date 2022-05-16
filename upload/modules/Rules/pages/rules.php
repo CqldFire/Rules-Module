@@ -10,37 +10,37 @@ define('PAGE', 'rules');
 $page_title = $rules_language->get('rules', 'rules');
 require_once(ROOT_PATH . '/core/templates/frontend_init.php');
 
-$rules_message = $queries->getWhere("rules_settings", array("name", "=", "rules_message"));
+$rules_message = $queries->getWhere("rules_settings", ["name", "=", "rules_message"]);
 $rules_message = $rules_message[0]->value;
 
-$catagories = $queries->getWhere("rules_catagories", array("id", "<>", 0));
+$catagories = $queries->getWhere("rules_catagories", ["id", "<>", 0]);
 
-$catagories_array = array();
+$catagories_array = [];
 foreach($catagories as $catagory){
-    $catagories_array[] = array(
+    $catagories_array[] = [
     'id' => Output::getClean($catagory->id),
         'name' => Output::getClean($catagory->name),
         'icon' => Output::getPurified(Output::getDecoded($catagory->icon)),
         'rules' => Output::getPurified(Output::getDecoded($catagory->rules))
-    );
+    ];
 }
 
-$buttons = $queries->getWhere("rules_buttons", array("id", "<>", 0));
+$buttons = $queries->getWhere("rules_buttons", ["id", "<>", 0]);
 
-$buttons_array = array();
+$buttons_array = [];
 foreach($buttons as $button){
-    $buttons_array[] = array(
+    $buttons_array[] = [
     'name' => Output::getClean($button->name),
         'link' => Output::getClean($button->link),
-    );
+    ];
 }
 
-$smarty->assign(array(
+$smarty->assign([
     'RULES' => $rules_language->get('rules', 'rules'),
     'MESSAGE' => Output::getPurified(Output::getDecoded($rules_message)),
     'CATAGORIES' => $catagories_array,
     'BUTTONS' => $buttons_array
-));
+]);
 
 Module::loadPage($user, $pages, $cache, $smarty, [$navigation, $cc_nav, $mod_nav], $widgets, $template);
 
