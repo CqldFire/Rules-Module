@@ -21,8 +21,7 @@ if(!isset($_GET['action'])){
     if(Input::exists()){
         $errors = [];
         if(Token::check(Input::get('token'))){
-            $validate = new Validate();
-            $validation = $validate->check($_POST, [
+            $validation = Validate::check($_POST, [
                 'message' => [
                     'required' => true,
                     'max' => 2048
@@ -145,8 +144,7 @@ if(!isset($_GET['action'])){
             if(Input::exists()){
                 $errors = [];
                 if(Token::check(Input::get('token'))){
-                    $validate = new Validate();
-                    $validation = $validate->check($_POST, [
+                    $validation = Validate::check($_POST, [
                         'rules_catagory_name' => [
                             'required' => true,
                             'min' => 1,
@@ -229,8 +227,7 @@ if(!isset($_GET['action'])){
             if(Input::exists()){
                 $errors = [];
                 if(Token::check(Input::get('token'))){
-                    $validate = new Validate();
-                    $validation = $validate->check($_POST, [
+                    $validation = Validate::check($_POST, [
                         'rules_catagory_name' => [
                             'required' => true,
                             'min' => 1,
@@ -317,8 +314,7 @@ if(!isset($_GET['action'])){
             if(Input::exists()){
                 $errors = [];
                 if(Token::check(Input::get('token'))){
-                    $validate = new Validate();
-                    $validation = $validate->check($_POST, [
+                    $validation = Validate::check($_POST, [
                         'rules_button_name' => [
                             'required' => true,
                             'min' => 1,
@@ -397,8 +393,7 @@ if(!isset($_GET['action'])){
             if(Input::exists()){
                 $errors = [];
                 if(Token::check(Input::get('token'))){
-                    $validate = new Validate();
-                    $validation = $validate->check($_POST, [
+                    $validation = Validate::check($_POST, [
                         'rules_button_name' => [
                             'required' => true,
                             'min' => 1,
@@ -508,16 +503,6 @@ $smarty->assign([
     'TOKEN' => Token::get(),
     'SUBMIT' => $language->get('general', 'submit')
 ]);
-
-$page_load = microtime(true) - $start;
-define(
-    "PAGE_LOAD_TIME",
-    str_replace(
-        "{x}",
-        round($page_load, 3),
-        $language->get("general", "page_loaded_in")
-    )
-);
 
 $template->onPageLoad();
 
