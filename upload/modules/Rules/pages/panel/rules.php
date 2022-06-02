@@ -56,9 +56,9 @@ if(!isset($_GET['action'])){
                     $cache->setCache('navbar_icons');
                     $cache->store('rules_icon', Input::get('icon'));
 
-                    $message_id = $queries->getWhere('rules_settings', ['name', '=', 'rules_message']);
+                    $message_id = DB::getInstance()->getWhere('rules_settings', ['name', '=', 'rules_message']);
                     $message_id = $message_id[0]->id;
-                    $queries->update('rules_settings', $message_id, [
+                    DB::getInstance()->update('rules_settings', $message_id, [
                         'value' => Input::get('message'),
                     ]);
 
@@ -73,7 +73,7 @@ if(!isset($_GET['action'])){
         }
     }
 
-    $rules_catagories = $queries->getWhere('rules_catagories', ['id', '<>', 0]);
+    $rules_catagories = DB::getInstance()->getWhere('rules_catagories', ['id', '<>', 0]);
     $catagories_array = [];
     if(count($rules_catagories)){
         foreach($rules_catagories as $catagory){
@@ -85,7 +85,7 @@ if(!isset($_GET['action'])){
         }
     }
 
-    $rules_buttons = $queries->getWhere('rules_buttons', ['id', '<>', 0]);
+    $rules_buttons = DB::getInstance()->getWhere('rules_buttons', ['id', '<>', 0]);
     $buttons_array = [];
     if(count($rules_buttons)){
         foreach($rules_buttons as $button){
@@ -103,7 +103,7 @@ if(!isset($_GET['action'])){
     $cache->setCache('navbar_icons');
     $icon = $cache->retrieve('rules_icon');
 
-    $rules_message = $queries->getWhere('rules_settings', ['name', '=', "rules_message"]);
+    $rules_message = DB::getInstance()->getWhere('rules_settings', ['name', '=', "rules_message"]);
     $rules_message = htmlspecialchars($rules_message[0]->value);
 
     $smarty->assign([
@@ -162,7 +162,7 @@ if(!isset($_GET['action'])){
                     if($validation->passed()){
                         // input into database
                         try {
-                            $queries->create('rules_catagories', [
+                            DB::getInstance()->create('rules_catagories', [
                                 'name' => htmlspecialchars(Input::get('rules_catagory_name')),
                                 'icon' => htmlspecialchars(Input::get('rules_catagory_icon')),
                                 'rules' => htmlspecialchars(Input::get('rules_catagory_rules'))
@@ -217,7 +217,7 @@ if(!isset($_GET['action'])){
                 Redirect::to(URL::build('/panel/rules'));
                 die();
             }
-            $catagory = $queries->getWhere('rules_catagories', ['id', '=', $_GET['id']]);
+            $catagory = DB::getInstance()->getWhere('rules_catagories', ['id', '=', $_GET['id']]);
             if(!count($catagory)){
                 Redirect::to(URL::build('/panel/rules'));
                 die();
@@ -244,7 +244,7 @@ if(!isset($_GET['action'])){
 
                     if($validation->passed()){
                         try {
-                            $queries->update('rules_catagories', $catagory->id, [
+                            DB::getInstance()->update('rules_catagories', $catagory->id, [
                                 'name' => htmlspecialchars(Input::get('rules_catagory_name')),
                                 'icon' => htmlspecialchars(Input::get('rules_catagory_icon')),
                                 'rules' => htmlspecialchars(Input::get('rules_catagory_rules'))
@@ -300,7 +300,7 @@ if(!isset($_GET['action'])){
         case 'delete':
             if(isset($_GET['id']) && is_numeric($_GET['id'])){
                 try {
-                    $queries->delete('rules_catagories', ['id', '=', $_GET['id']]);
+                    DB::getInstance()->delete('rules_catagories', ['id', '=', $_GET['id']]);
                 } catch(Exception $e){
                     die($e->getMessage());
                 }
@@ -330,7 +330,7 @@ if(!isset($_GET['action'])){
                     if($validation->passed()){
                         // input into database
                         try {
-                            $queries->create('rules_buttons', [
+                            DB::getInstance()->create('rules_buttons', [
                                 'name' => htmlspecialchars(Input::get('rules_button_name')),
                                 'link' => htmlspecialchars(Input::get('rules_button_link'))
                             ]);
@@ -383,7 +383,7 @@ if(!isset($_GET['action'])){
                 Redirect::to(URL::build('/panel/rules'));
                 die();
             }
-            $button = $queries->getWhere('rules_buttons', ['id', '=', $_GET['id']]);
+            $button = DB::getInstance()->getWhere('rules_buttons', ['id', '=', $_GET['id']]);
             if(!count($button)){
                 Redirect::to(URL::build('/panel/rules'));
                 die();
@@ -408,7 +408,7 @@ if(!isset($_GET['action'])){
 
                     if($validation->passed()){
                         try {
-                            $queries->update('rules_buttons', $button->id, [
+                            DB::getInstance()->update('rules_buttons', $button->id, [
                                 'name' => htmlspecialchars(Input::get('rules_button_name')),
                                 'link' => htmlspecialchars(Input::get('rules_button_link'))
                             ]);
@@ -461,7 +461,7 @@ if(!isset($_GET['action'])){
         case 'delete_button':
             if(isset($_GET['id']) && is_numeric($_GET['id'])){
                 try {
-                    $queries->delete('rules_buttons', ['id', '=', $_GET['id']]);
+                    DB::getInstance()->delete('rules_buttons', ['id', '=', $_GET['id']]);
                 } catch(Exception $e){
                     die($e->getMessage());
                 }
