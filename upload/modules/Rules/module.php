@@ -49,29 +49,29 @@ class Rules_Module extends Module {
         }
         
         try {
-            DB::getInstance()->create('rules_settings', [
+            DB::getInstance()->insert('rules_settings', [
                 'name' => 'rules_message',
                 'value' => '<div style="text-align: center;"><strong><span style="font-size:18px">Welcome to Skyfall&#39;s rules page!</span></strong><br />Click on the tabs above to see the different sections of the rules.<br /><br /><strong>Note:</strong>&nbsp;You can change this message and the rules lists on the tabs above in StaffCP -&gt; Rules. All of the rules lists are fully customizable via a text editor, so you can create unlimited rules, include any type of punishments, and format it all however you want.<br /><br />Useful links:</div>'
             ]);
-            DB::getInstance()->create('rules_catagories', [
+            DB::getInstance()->insert('rules_catagories', [
                 'name' => 'Bedwars',
                 'icon' => '<i class="fas fa-bed"></i>',
                 'rules' => '&lt;div style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;span style=&quot;font-size:18px&quot;&gt;Bedwars Server Rules:&lt;/span&gt;&lt;/strong&gt;&lt;/div&gt;&lt;br /&gt;1. No hacking or unfair advantages of any kind.&lt;br /&gt;&lt;br /&gt;2. No cross teaming in any bedwars mode.&lt;br /&gt;&lt;br /&gt;3. No team griefing&lt;br /&gt;&lt;br /&gt;&lt;span style=&quot;color:#c0392b&quot;&gt;&lt;strong&gt;Punishment:&lt;/strong&gt;&lt;/span&gt; Breaking any of these rules will result in a temporary ban for 30 days.'
             ]);
-            DB::getInstance()->create('rules_catagories', [
+            DB::getInstance()->insert('rules_catagories', [
                 'name' => 'Chat',
                 'icon' => '<i class="fas fa-comments"></i>',
                 'rules' => '&lt;div style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;&lt;span style=&quot;font-size:18px&quot;&gt;Chat Rules:&lt;/span&gt;&lt;/strong&gt;&lt;/div&gt;&lt;br /&gt;1. No swearing&lt;br /&gt;&lt;br /&gt;2. No bullying, put-downs, or other harassment&lt;br /&gt;&lt;br /&gt;3. No spamming&lt;br /&gt;&lt;br /&gt;&lt;span style=&quot;color:#c0392b&quot;&gt;&lt;strong&gt;Punishment:&lt;/strong&gt;&lt;/span&gt; Breaking any of these rules can result in a temporary/permanent mute'
             ]);
-            DB::getInstance()->create('rules_buttons', [
+            DB::getInstance()->insert('rules_buttons', [
                 'name' => 'Player Report',
                 'link' => 'https://hypixel.net/forums/report-rule-breakers.37/'
             ]);
-            DB::getInstance()->create('rules_buttons', [
+            DB::getInstance()->insert('rules_buttons', [
                 'name' => 'Bans',
                 'link' => 'https://www.lemoncloud.org/bans/'
             ]);
-            DB::getInstance()->create('rules_buttons', [
+            DB::getInstance()->insert('rules_buttons', [
                 'name' => 'Ban Appeal',
                 'link' => 'https://hypixel.net/forums/ban-appeal.36/'
             ]);
@@ -79,7 +79,7 @@ class Rules_Module extends Module {
         }
         
         try {
-            $group = DB::getInstance()->getWhere('groups', ['id', '=', 2]);
+            $group = DB::getInstance()->get('groups', ['id', '=', 2])->results();
             $group = $group[0];
             
             $group_permissions = json_decode($group->permissions, TRUE);

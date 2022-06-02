@@ -10,10 +10,10 @@ define('PAGE', 'rules');
 $page_title = $rules_language->get('rules', 'rules');
 require_once(ROOT_PATH . '/core/templates/frontend_init.php');
 
-$rules_message = DB::getInstance()->getWhere("rules_settings", ["name", "=", "rules_message"]);
+$rules_message = DB::getInstance()->get("rules_settings", ["name", "=", "rules_message"])->results();
 $rules_message = $rules_message[0]->value;
 
-$catagories = DB::getInstance()->getWhere("rules_catagories", ["id", "<>", 0]);
+$catagories = DB::getInstance()->get("rules_catagories", ["id", "<>", 0])->results();
 
 $catagories_array = [];
 foreach($catagories as $catagory){
@@ -25,7 +25,7 @@ foreach($catagories as $catagory){
     ];
 }
 
-$buttons = DB::getInstance()->getWhere("rules_buttons", ["id", "<>", 0]);
+$buttons = DB::getInstance()->get("rules_buttons", ["id", "<>", 0])->results();
 
 $buttons_array = [];
 foreach($buttons as $button){
