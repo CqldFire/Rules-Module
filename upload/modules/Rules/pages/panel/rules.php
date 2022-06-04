@@ -85,7 +85,7 @@ if(!isset($_GET['action'])){
         }
     }
 
-    $rules_buttons = DB::getInstance()->getgetWhere('rules_buttons', ['id', '<>', 0])->results();
+    $rules_buttons = DB::getInstance()->get('rules_buttons', ['id', '<>', 0])->results();
     $buttons_array = [];
     if(count($rules_buttons)){
         foreach($rules_buttons as $button){
@@ -103,7 +103,7 @@ if(!isset($_GET['action'])){
     $cache->setCache('navbar_icons');
     $icon = $cache->retrieve('rules_icon');
 
-    $rules_message = DB::getInstance()->getgetWhere('rules_settings', ['name', '=', "rules_message"])->results();
+    $rules_message = DB::getInstance()->get('rules_settings', ['name', '=', "rules_message"])->results();
     $rules_message = htmlspecialchars($rules_message[0]->value);
 
     $smarty->assign([
