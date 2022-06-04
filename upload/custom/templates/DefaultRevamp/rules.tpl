@@ -2,7 +2,16 @@
 <h2 class="ui header">{$RULES}</h2>
 <div class="ui stackable grid">
     <div class="ui row">
-        <div class="ui {if count($WIDGETS)}ten wide tablet twelve wide computer{else}sixteen wide{/if} column">
+
+    	{if count($WIDGETS_LEFT)}
+          <div class="ui six wide tablet four wide computer column">
+            {foreach from=$WIDGETS_LEFT item=widget}
+                {$widget}
+            {/foreach}
+          </div>
+        {/if}
+
+        <div class="ui {if count($WIDGETS_LEFT) && count($WIDGETS_RIGHT) }four wide tablet eight wide computer{elseif count($WIDGETS_LEFT) || count($WIDGETS_RIGHT)}ten wide tablet twelve wide computer{else}sixteen wide{/if} column">
 	    <div class="ui top attached tabular menu">
                 <a class="item active" data-tab="home"><i class="fas fa-gavel"></i> {$RULES}</a>
           	{foreach from=$CATAGORIES item=catagory}
@@ -21,11 +30,15 @@
                 <div class="ui bottom attached tab segment" id="id-{$catagory.id}" data-tab="id-{$catagory.id}">{$catagory.rules}</div>
             {/foreach}
         </div>
-        {if count($WIDGETS)}
-        <div class="ui six wide tablet four wide computer column">
-            {foreach from=$WIDGETS item=widget} {$widget} {/foreach}
-        </div>
+	
+	{if count($WIDGETS_RIGHT)}
+          <div class="ui six wide tablet four wide computer column">
+            {foreach from=$WIDGETS_RIGHT item=widget}
+              {$widget}
+            {/foreach}
+          </div>
         {/if}
+	
     </div>
 </div>
 {include file='footer.tpl'}
