@@ -1,9 +1,9 @@
 <?php 
 /*
- *	Rules module made by Coldfire
- *	https://coldfiredzn.com
+ *    Rules module made by Coldfire
+ *    https://coldfiredzn.com
  *
- *	Using code from the vote module by Partydragen and Samerton
+ *    Using code from the vote module by Partydragen and Samerton
  */
 
 $rules_language = new Language(ROOT_PATH . '/modules/Rules/language', LANGUAGE);
