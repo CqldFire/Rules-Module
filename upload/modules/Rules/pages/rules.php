@@ -44,8 +44,6 @@ $smarty->assign([
 
 Module::loadPage($user, $pages, $cache, $smarty, [$navigation, $cc_nav, $staffcp_nav], $widgets, $template);
 
-$page_load = microtime(true) - $start;
-
 $template->onPageLoad();
 $template->addJSScript('$(\'.menu .item\').tab()');
 
