@@ -24,22 +24,6 @@ class Rules_Module extends Module {
     }
     
     public function onInstall(){
-
-        try {
-            $engine = Config::get('mysql/engine');
-            $charset = Config::get('mysql/charset');
-        } catch(Exception $e){
-            $engine = 'InnoDB';
-            $charset = 'utf8mb4';
-        }
-
-        if(!$engine || is_array($engine))
-            $engine = 'InnoDB';
-
-        if(!$charset || is_array($charset))
-            $charset = 'latin1';
-
-        $queries = new Queries();
         
         try {
             $data = DB::getInstance()->createTable("rules_settings", " `id` int(11) NOT NULL AUTO_INCREMENT, `name` varchar(20) NOT NULL, `value` varchar(2048) NOT NULL, PRIMARY KEY (`id`)", "ENGINE=$engine DEFAULT CHARSET=$charset");
