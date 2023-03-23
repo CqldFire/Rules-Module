@@ -93,8 +93,8 @@ class Rules_Module extends Module {
                 AssetTree::TINYMCE,
             ]);
 
-            $template->addJSScript(Input::createTinyEditor($this->_rules_language, 'InputMessage'));
-            $template->addJSScript(Input::createTinyEditor($this->_rules_language, 'InputCatagoryRules'));
+            $template->addJSScript(Input::createTinyEditor($this->_rules_language, 'InputMessage', null, false, true));
+            $template->addJSScript(Input::createTinyEditor($this->_rules_language, 'InputCatagoryRules', null, false, true));
         }
         if(defined('PAGE') && PAGE == 'rules'){
             $template->assets()->include([
