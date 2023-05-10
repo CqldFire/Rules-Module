@@ -126,7 +126,7 @@ if(!isset($_GET['action'])){
         'LINK_NONE' => $language->get('admin', 'page_link_none'),
         'ICON' => $rules_language->get('rules', 'icon'),
         'ICON_EXAMPLE' => htmlspecialchars($rules_language->get('rules', 'icon_example')),
-        'ICON_VALUE' => Output::getClean(htmlspecialchars_decode($icon)),
+        'ICON_VALUE' => $icon,
         'CATAGORY_LIST' => $catagories_array,
         'NO_RULES_CATAGORIES' => $rules_language->get('rules', 'no_rules_catagories'),
         'MESSAGE' => $rules_language->get('rules', 'message'),
@@ -290,7 +290,7 @@ if(!isset($_GET['action'])){
                 'RULES_CATAGORY_NAME' => $rules_language->get('rules', 'rules_catagory_name'),
                 'RULES_CATAGORY_NAME_VALUE' => Output::getClean($catagory->name),
                 'RULES_CATAGORY_ICON' => $rules_language->get('rules', 'rules_catagory_icon'),
-                'RULES_CATAGORY_ICON_VALUE' => Output::getClean($catagory->icon),
+                'RULES_CATAGORY_ICON_VALUE' => $catagory->icon,
                 'RULES_CATAGORY_RULES' => $rules_language->get('rules', 'rules_catagory_rules'),
                 'RULES_CATAGORY_RULES_VALUE' => Output::getClean($catagory->rules),
             ]);
