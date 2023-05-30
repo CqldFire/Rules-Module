@@ -292,7 +292,7 @@ if(!isset($_GET['action'])){
                 'RULES_CATAGORY_ICON' => $rules_language->get('rules', 'rules_catagory_icon'),
                 'RULES_CATAGORY_ICON_VALUE' => $catagory->icon,
                 'RULES_CATAGORY_RULES' => $rules_language->get('rules', 'rules_catagory_rules'),
-                'RULES_CATAGORY_RULES_VALUE' => Output::getClean($catagory->rules),
+                'RULES_CATAGORY_RULES_VALUE' => $catagory->rules,
             ]);
 
             $template_file = 'rules/rules_edit.tpl';
