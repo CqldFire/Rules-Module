@@ -101,7 +101,7 @@ if(!isset($_GET['action'])){
     $link_location = $cache->retrieve('rules_location');
 
     $cache->setCache('navbar_icons');
-    $icon = $cache->retrieve('rules_icon');
+    $icon = htmlspecialchars($cache->retrieve('rules_icon'));
 
     $rules_message = DB::getInstance()->get('rules_settings', ['name', '=', "rules_message"])->results();
     $rules_message = htmlspecialchars($rules_message[0]->value);
