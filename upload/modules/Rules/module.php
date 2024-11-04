@@ -8,7 +8,7 @@
 
 class Rules_Module extends Module {
     private $_rules_language;
-    private $_language
+    private $_language;
     
     public function __construct($language, $rules_language, $pages){
         $this->_rules_language = $rules_language;
