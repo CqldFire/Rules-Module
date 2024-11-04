@@ -8,9 +8,11 @@
 
 class Rules_Module extends Module {
     private $_rules_language;
+    private $_language
     
-    public function __construct($rules_language, $pages){
+    public function __construct($language, $rules_language, $pages){
         $this->_rules_language = $rules_language;
+        $this->_language = $language;
         
         $name = 'Rules';
         $author = '<a href="https://coldfiredzn.com" target="_blank" rel="nofollow noopener">Coldfire</a>';
@@ -93,8 +95,8 @@ class Rules_Module extends Module {
                 AssetTree::TINYMCE,
             ]);
 
-            $template->addJSScript(Input::createTinyEditor($this->_rules_language, 'InputMessage', null, false, true));
-            $template->addJSScript(Input::createTinyEditor($this->_rules_language, 'InputCatagoryRules', null, false, true));
+            $template->addJSScript(Input::createTinyEditor($this->_language, 'InputMessage', null, false, true));
+            $template->addJSScript(Input::createTinyEditor($this->_language, 'InputCatagoryRules', null, false, true));
         }
         if(defined('PAGE') && PAGE == 'rules'){
             $template->assets()->include([
