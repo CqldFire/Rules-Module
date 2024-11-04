@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
  *    Rules module made by Coldfire
  *    https://coldfiredzn.com
