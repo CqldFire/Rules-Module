@@ -106,7 +106,7 @@ if (!isset($_GET['action'])) {
     $rules_message = DB::getInstance()->get('rules_settings', ['name', '=', "rules_message"])->results();
     $rules_message = htmlspecialchars($rules_message[0]->value);
 
-    $smarty->assign([
+    $template->getEngine()->addVariables([
         'NEW_BUTTON' => $rules_language->get('rules', 'new_button'),
         'RULES_BUTTON_NAME' => $rules_language->get('rules', 'rules_button_name'),
         'NEW_BUTTON_LINK' => URL::build('/panel/rules/', 'action=new_button'),
@@ -198,7 +198,7 @@ if (!isset($_GET['action'])) {
                 }
             }
 
-            $smarty->assign([
+            $template->getEngine()->addVariables([
                 'NEW_CATAGORY' => $rules_language->get('rules', 'new_catagory'),
                 'BACK' => $language->get('general', 'back'),
                 'BACK_LINK' => URL::build('/panel/rules'),
@@ -277,7 +277,7 @@ if (!isset($_GET['action'])) {
                 }
             }
 
-            $smarty->assign([
+            $template->getEngine()->addVariables([
                 'EDIT_CATAGORY' => $rules_language->get('rules', 'edit_catagory'),
                 'BACK' => $language->get('general', 'back'),
                 'BACK_LINK' => URL::build('/panel/rules'),
@@ -359,7 +359,7 @@ if (!isset($_GET['action'])) {
                 }
             }
 
-            $smarty->assign([
+            $template->getEngine()->addVariables([
                 'NEW_BUTTON' => $rules_language->get('rules', 'new_button'),
                 'BACK' => $language->get('general', 'back'),
                 'BACK_LINK' => URL::build('/panel/rules'),
@@ -434,7 +434,7 @@ if (!isset($_GET['action'])) {
                 }
             }
 
-            $smarty->assign([
+            $template->getEngine()->addVariables([
                 'EDIT_BUTTON' => $rules_language->get('rules', 'edit_button'),
                 'BACK' => $language->get('general', 'back'),
                 'BACK_LINK' => URL::build('/panel/rules'),
@@ -472,18 +472,18 @@ if (Session::exists('staff_rules'))
     $success = Session::flash('staff_rules');
 
 if (isset($success))
-    $smarty->assign([
+    $template->getEngine()->addVariables([
         'SUCCESS' => $success,
         'SUCCESS_TITLE' => $language->get('general', 'success')
     ]);
 
 if (isset($errors) && count($errors))
-    $smarty->assign([
+    $template->getEngine()->addVariables([
         'ERRORS' => $errors,
         'ERRORS_TITLE' => $language->get('general', 'error')
     ]);
 
-$smarty->assign([
+$template->getEngine()->addVariables([
     'PARENT_PAGE' => PARENT_PAGE,
     'PAGE' => PANEL_PAGE,
     'DASHBOARD' => $language->get('admin', 'dashboard'),
@@ -496,4 +496,4 @@ $template->onPageLoad();
 
 require ROOT_PATH . "/core/templates/panel_navbar.php";
 
-$template->displayTemplate($template_file, $smarty);
+$template->displayTemplate($template_file);
