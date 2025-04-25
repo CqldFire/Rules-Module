@@ -35,7 +35,7 @@ foreach ($buttons as $button) {
     ];
 }
 
-$smarty->assign([
+$template->getEngine()->addVariables([
     'RULES' => $rules_language->get('rules', 'rules'),
     'MESSAGE' => Output::getPurified(Output::getDecoded($rules_message)),
     'CATAGORIES' => $catagories_array,
@@ -47,10 +47,10 @@ Module::loadPage($user, $pages, $cache, $smarty, [$navigation, $cc_nav, $staffcp
 $template->onPageLoad();
 $template->addJSScript('$(\'.menu .item\').tab()');
 
-$smarty->assign('WIDGETS_LEFT', $widgets->getWidgets('left'));
-$smarty->assign('WIDGETS_RIGHT', $widgets->getWidgets('right'));
+$template->getEngine()->addVariable('WIDGETS_LEFT', $widgets->getWidgets('left'));
+$template->getEngine()->addVariable('WIDGETS_RIGHT', $widgets->getWidgets('right'));
 
 require(ROOT_PATH . '/core/templates/navbar.php');
 require(ROOT_PATH . '/core/templates/footer.php');
 
-$template->displayTemplate('rules.tpl', $smarty);
+$template->displayTemplate('rules');
