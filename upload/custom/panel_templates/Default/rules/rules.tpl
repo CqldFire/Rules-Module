@@ -67,7 +67,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            {else} {$NO_RULES_CATAGORIES} 
+                            {else} {$NO_RULES_CATAGORIES}
                             {/if}
                             <hr>
                             <a href="{$NEW_BUTTON_LINK}" class="btn btn-primary">{$NEW_BUTTON}</a>
@@ -101,7 +101,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            {else} {$NO_RULES_BUTTONS} 
+                            {else} {$NO_RULES_BUTTONS}
                             {/if}
                             <hr>
                             <form action="" method="post">

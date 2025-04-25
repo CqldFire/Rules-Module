@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
  *    Rules module made by Coldfire
  *    https://coldfiredzn.com
@@ -8,30 +8,32 @@
 
 class Rules_Module extends Module {
     private $_rules_language;
-    
-    public function __construct($rules_language, $pages){
+    private $_language;
+
+    public function __construct($language, $rules_language, $pages) {
         $this->_rules_language = $rules_language;
-        
+        $this->_language = $language;
+
         $name = 'Rules';
         $author = '<a href="https://coldfiredzn.com" target="_blank" rel="nofollow noopener">Coldfire</a>';
-        $module_version = '1.8.4';
-        $nameless_version = '2.1.0';
-        
+        $module_version = '1.8.5';
+        $nameless_version = '2.1.2';
+
         parent::__construct($this, $name, $author, $module_version, $nameless_version);
-        
+
         $pages->add('Rules', '/rules', 'pages/rules.php', 'rules', true);
         $pages->add('Rules', '/panel/rules', 'pages/panel/rules.php');
     }
-    
-    public function onInstall(){
-        
+
+    public function onInstall() {
+
         try {
-            $data = DB::getInstance()->createTable("rules_settings", " `id` int(11) NOT NULL AUTO_INCREMENT, `name` varchar(20) NOT NULL, `value` varchar(2048) NOT NULL, PRIMARY KEY (`id`)", "ENGINE=$engine DEFAULT CHARSET=$charset");
-            $data = DB::getInstance()->createTable("rules_catagories", " `id` int(11) NOT NULL AUTO_INCREMENT, `name` varchar(96) NOT NULL, `icon` varchar(96) NOT NULL, `rules` longtext NOT NULL, PRIMARY KEY (`id`)", "ENGINE=$engine DEFAULT CHARSET=$charset");
-            $data = DB::getInstance()->createTable("rules_buttons", " `id` int(11) NOT NULL AUTO_INCREMENT, `name` varchar(96) NOT NULL, `link` varchar(96) NOT NULL, PRIMARY KEY (`id`)", "ENGINE=$engine DEFAULT CHARSET=$charset");
-        } catch(Exception $e){
+            DB::getInstance()->createTable("rules_settings", " `id` int(11) NOT NULL AUTO_INCREMENT, `name` varchar(20) NOT NULL, `value` varchar(2048) NOT NULL, PRIMARY KEY (`id`)");
+            DB::getInstance()->createTable("rules_catagories", " `id` int(11) NOT NULL AUTO_INCREMENT, `name` varchar(96) NOT NULL, `icon` varchar(96) NOT NULL, `rules` longtext NOT NULL, PRIMARY KEY (`id`)");
+            DB::getInstance()->createTable("rules_buttons", " `id` int(11) NOT NULL AUTO_INCREMENT, `name` varchar(96) NOT NULL, `link` varchar(96) NOT NULL, PRIMARY KEY (`id`)");
+        } catch (Exception $e) {
         }
-        
+
         try {
             DB::getInstance()->insert('rules_settings', [
                 'name' => 'rules_message',
@@ -59,44 +61,47 @@ class Rules_Module extends Module {
                 'name' => 'Ban Appeal',
                 'link' => 'https://hypixel.net/forums/ban-appeal.36/'
             ]);
-        } catch(Exception $e){
+        } catch (Exception $e) {
         }
-        
+
         try {
             $group = DB::getInstance()->get('groups', ['id', '=', 2])->results();
             $group = $group[0];
-            
+
             $group_permissions = json_decode($group->permissions, TRUE);
             $group_permissions['admincp.rules'] = 1;
-            
+
             $group_permissions = json_encode($group_permissions);
             DB::getInstance()->update('groups', 2, ['permissions' => $group_permissions]);
-        } catch(Exception $e){
+        } catch (Exception $e) {
         }
     }
 
-    public function onUninstall(){
+    public function onUninstall()
+    {
         // No actions necessary
     }
 
-    public function onEnable(){
+    public function onEnable()
+    {
         // No actions necessary
     }
 
-    public function onDisable(){
+    public function onDisable()
+    {
         // No actions necessary
     }
 
-    public function onPageLoad($user, $pages, $cache, $smarty, $navs, $widgets, $template){
-        if(defined('PANEL_PAGE') && PANEL_PAGE == 'rules') {
+    public function onPageLoad($user, $pages, $cache, $smarty, $navs, $widgets, $template) {
+        if (defined('PANEL_PAGE') && PANEL_PAGE == 'rules') {
             $template->assets()->include([
                 AssetTree::TINYMCE,
             ]);
 
-            $template->addJSScript(Input::createTinyEditor($this->_rules_language, 'InputMessage', null, false, true));
-            $template->addJSScript(Input::createTinyEditor($this->_rules_language, 'InputCatagoryRules', null, false, true));
+            $template->addJSScript(Input::createTinyEditor($this->_language, 'InputMessage', null, false, true));
+            $template->addJSScript(Input::createTinyEditor($this->_language, 'InputCatagoryRules', null, false, true));
         }
-        if(defined('PAGE') && PAGE == 'rules'){
+        if (defined('PAGE') && PAGE == 'rules') {
             $template->assets()->include([
                 AssetTree::TINYMCE,
             ]);
@@ -104,67 +109,68 @@ class Rules_Module extends Module {
         PermissionHandler::registerPermissions('Rules', [
             'admincp.rules' => $this->_rules_language->get('rules', 'rules')
         ]);
-        
+
         $cache->setCache('nav_location');
-        if(!$cache->isCached('rules_location')){
+        if (!$cache->isCached('rules_location')) {
             $link_location = 1;
             $cache->store('rules_location', 1);
         } else {
             $link_location = $cache->retrieve('rules_location');
         }
-        
+
         $cache->setCache('navbar_icons');
-        if(!$cache->isCached('rules_icon')) {
+        if (!$cache->isCached('rules_icon')) {
             $icon = '';
         } else {
             $icon = $cache->retrieve('rules_icon');
         }
-        
+
         $cache->setCache('navbar_order');
-        if(!$cache->isCached('rules_order')){
+        if (!$cache->isCached('rules_order')) {
             // Create cache entry now
             $rules_order = 3;
             $cache->store('rules_order', 3);
         } else {
             $rules_order = $cache->retrieve('rules_order');
         }
-        
-        switch($link_location){
+
+        switch ($link_location) {
             case 1:
                 $navs[0]->add('rules', $this->_rules_language->get('rules', 'rules'), URL::build('/rules'), 'top', null, $rules_order, $icon);
-            break;
+                break;
             case 2:
                 $navs[0]->addItemToDropdown('more_dropdown', 'rules', $this->_rules_language->get('rules', 'rules'), URL::build('/rules'), 'top', null, $icon, $rules_order);
-            break;
+                break;
             case 3:
                 $navs[0]->add('rules', $this->_rules_language->get('rules', 'rules'), URL::build('/rules'), 'footer', null, $rules_order, $icon);
-            break;
+                break;
         }
 
-        if(defined('BACK_END')){
-            if($user->hasPermission('admincp.rules')){
+        if (defined('BACK_END')) {
+            if ($user->hasPermission('admincp.rules')) {
                 $cache->setCache('panel_sidebar');
-                if(!$cache->isCached('rules_new_order')){
+                if (!$cache->isCached('rules_new_order')) {
                     $order = 14;
                     $cache->store('rules_new_order', 14);
                 } else {
                     $order = $cache->retrieve('rules_new_order');
                 }
 
-                if(!$cache->isCached('rules_icon')){
+                if (!$cache->isCached('rules_icon')) {
                     $icon = '<i class="nav-icon fas fa-cogs"></i>';
                     $cache->store('rules_icon', $icon);
                 } else {
                     $icon = $cache->retrieve('rules_icon');
                 }
-                
+
                 $navs[2]->add('rules_divider', mb_strtoupper($this->_rules_language->get('rules', 'rules'), 'UTF-8'), 'divider', 'top', null, $order, '');
                 $navs[2]->add('rules', $this->_rules_language->get('rules', 'rules'), URL::build('/panel/rules'), 'top', null, $order + 0.1, $icon);
             }
         }
     }
 
-    public function getDebugInfo(): array {
+    public function getDebugInfo(): array
+    {
         return [];
     }
 }

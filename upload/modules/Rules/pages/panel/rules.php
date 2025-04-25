@@ -17,10 +17,10 @@ define('PANEL_PAGE', 'rules');
 $page_title = $rules_language->get('rules', 'rules');
 require_once(ROOT_PATH . '/core/templates/backend_init.php');
 
-if(!isset($_GET['action'])){
-    if(Input::exists()){
+if (!isset($_GET['action'])) {
+    if (Input::exists()) {
         $errors = [];
-        if(Token::check(Input::get('token'))){
+        if (Token::check(Input::get('token'))) {
             $validation = Validate::check($_POST, [
                 'message' => [
                     'required' => true,
@@ -34,21 +34,21 @@ if(!isset($_GET['action'])){
                 ]
             ]);
 
-            if($validation->passed()){            
+            if ($validation->passed()) {
                 try {
-                    if(isset($_POST['link_location'])){
-                        switch($_POST['link_location']){
+                    if (isset($_POST['link_location'])) {
+                        switch ($_POST['link_location']) {
                             case 1:
                             case 2:
                             case 3:
                             case 4:
                                 $location = $_POST['link_location'];
                                 break;
-                        default:
-                        $location = 1;
+                            default:
+                                $location = 1;
                         }
                     } else
-                    $location = 1;
+                        $location = 1;
 
                     $cache->setCache('nav_location');
                     $cache->store('rules_location', $location);
@@ -62,7 +62,7 @@ if(!isset($_GET['action'])){
                         'value' => Input::get('message'),
                     ]);
 
-                } catch(Exception $e){
+                } catch (Exception $e) {
                     $errors[] = $e->getMessage();
                 }
             } else {
@@ -75,8 +75,8 @@ if(!isset($_GET['action'])){
 
     $rules_catagories = DB::getInstance()->get('rules_catagories', ['id', '<>', 0])->results();
     $catagories_array = [];
-    if(count($rules_catagories)){
-        foreach($rules_catagories as $catagory){
+    if (count($rules_catagories)) {
+        foreach ($rules_catagories as $catagory) {
             $catagories_array[] = [
                 'edit_link' => URL::build('/panel/rules/', 'action=edit&id=' . Output::getClean($catagory->id)),
                 'name' => Output::getClean($catagory->name),
@@ -87,8 +87,8 @@ if(!isset($_GET['action'])){
 
     $rules_buttons = DB::getInstance()->get('rules_buttons', ['id', '<>', 0])->results();
     $buttons_array = [];
-    if(count($rules_buttons)){
-        foreach($rules_buttons as $button){
+    if (count($rules_buttons)) {
+        foreach ($rules_buttons as $button) {
             $buttons_array[] = [
                 'edit_link' => URL::build('/panel/rules/', 'action=edit_button&id=' . Output::getClean($button->id)),
                 'name' => Output::getClean($button->name),
@@ -139,11 +139,11 @@ if(!isset($_GET['action'])){
 
     $template_file = 'rules/rules.tpl';
 } else {
-    switch($_GET['action']){
+    switch ($_GET['action']) {
         case 'new':
-            if(Input::exists()){
+            if (Input::exists()) {
                 $errors = [];
-                if(Token::check(Input::get('token'))){
+                if (Token::check(Input::get('token'))) {
                     $validation = Validate::check($_POST, [
                         'rules_catagory_name' => [
                             'required' => true,
@@ -159,7 +159,7 @@ if(!isset($_GET['action'])){
                         ]
                     ]);
 
-                    if($validation->passed()){
+                    if ($validation->passed()) {
                         // input into database
                         try {
                             DB::getInstance()->insert('rules_catagories', [
@@ -170,28 +170,25 @@ if(!isset($_GET['action'])){
                             Session::flash('staff_rules', $rules_language->get('rules', 'catagory_created_successfully'));
                             Redirect::to(URL::build('/panel/rules'));
                             die();
-                        } catch(Exception $e){
+                        } catch (Exception $e) {
                             $errors[] = $e->getMessage();
                         }
                     } else {
-                        foreach($validation->errors() as $item){
-                            if(strpos($item, 'is required') !== false){
-                                if(strpos($item, 'rules_catagory_name') !== false)
+                        foreach ($validation->errors() as $item) {
+                            if (strpos($item, 'is required') !== false) {
+                                if (strpos($item, 'rules_catagory_name') !== false)
                                     $errors[] = $rules_language->get('rules', 'catagory_name_required');
-
-                                else if(strpos($item, 'rules_catagory_rules') !== false)
+                                else if (strpos($item, 'rules_catagory_rules') !== false)
                                     $errors[] = $rules_language->get('rules', 'catagory_rules_required');
-                            } else if(strpos($item, 'minimum') !== false){
-                                if(strpos($item, 'rules_catagory_name') !== false)
+                            } else if (strpos($item, 'minimum') !== false) {
+                                if (strpos($item, 'rules_catagory_name') !== false)
                                     $errors[] = $rules_language->get('rules', 'catagory_name_minimum');
-
-                                else if(strpos($item, 'rules_catagory_rules') !== false)
+                                else if (strpos($item, 'rules_catagory_rules') !== false)
                                     $errors[] = $rules_language->get('rules', 'catagory_rules_minimum');
-                            } else if(strpos($item, 'maximum') !== false){
-                                if(strpos($item, 'rules_catagory_name') !== false)
+                            } else if (strpos($item, 'maximum') !== false) {
+                                if (strpos($item, 'rules_catagory_name') !== false)
                                     $errors[] = $rules_language->get('rules', 'catagory_name_maximum');
-
-                                else if(strpos($item, 'rules_catagory_icon') !== false)
+                                else if (strpos($item, 'rules_catagory_icon') !== false)
                                     $errors[] = $rules_language->get('rules', 'catagory_icon_maximum');
                             }
                         }
@@ -211,22 +208,22 @@ if(!isset($_GET['action'])){
             ]);
 
             $template_file = 'rules/rules_new.tpl';
-        break;
+            break;
         case 'edit':
-            if(!isset($_GET['id']) || !is_numeric($_GET['id'])){
+            if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
                 Redirect::to(URL::build('/panel/rules'));
                 die();
             }
             $catagory = DB::getInstance()->get('rules_catagories', ['id', '=', $_GET['id']])->results();
-            if(!count($catagory)){
+            if (!count($catagory)) {
                 Redirect::to(URL::build('/panel/rules'));
                 die();
             }
             $catagory = $catagory[0];
 
-            if(Input::exists()){
+            if (Input::exists()) {
                 $errors = [];
-                if(Token::check(Input::get('token'))){
+                if (Token::check(Input::get('token'))) {
                     $validation = Validate::check($_POST, [
                         'rules_catagory_name' => [
                             'required' => true,
@@ -237,12 +234,12 @@ if(!isset($_GET['action'])){
                             'max' => 96
                         ],
                         'rules_catagory_rules' => [
-                            'required' => true,
-                            'min' => 1
-                        ]
+                                'required' => true,
+                                'min' => 1
+                            ]
                     ]);
 
-                    if($validation->passed()){
+                    if ($validation->passed()) {
                         try {
                             DB::getInstance()->update('rules_catagories', $catagory->id, [
                                 'name' => htmlspecialchars(Input::get('rules_catagory_name')),
@@ -252,28 +249,25 @@ if(!isset($_GET['action'])){
                             Session::flash('staff_rules', $rules_language->get('rules', 'catagory_updated_successfully'));
                             Redirect::to(URL::build('/panel/rules'));
                             die();
-                        } catch(Exception $e){
+                        } catch (Exception $e) {
                             $errors[] = $e->getMessage();
                         }
                     } else {
-                        foreach($validation->errors() as $item){
-                            if(strpos($item, 'is required') !== false){
-                                if(strpos($item, 'rules_catagory_name') !== false)
+                        foreach ($validation->errors() as $item) {
+                            if (strpos($item, 'is required') !== false) {
+                                if (strpos($item, 'rules_catagory_name') !== false)
                                     $errors[] = $rules_language->get('rules', 'catagory_name_required');
-
-                                else if(strpos($item, 'rules_catagory_rules') !== false)
+                                else if (strpos($item, 'rules_catagory_rules') !== false)
                                     $errors[] = $rules_language->get('rules', 'catagory_rules_required');
-                            } else if(strpos($item, 'minimum') !== false){
-                                if(strpos($item, 'rules_catagory_name') !== false)
+                            } else if (strpos($item, 'minimum') !== false) {
+                                if (strpos($item, 'rules_catagory_name') !== false)
                                     $errors[] = $rules_language->get('rules', 'catagory_name_minimum');
-
-                                else if(strpos($item, 'rules_catagory_rules') !== false)
+                                else if (strpos($item, 'rules_catagory_rules') !== false)
                                     $errors[] = $rules_language->get('rules', 'catagory_rules_minimum');
-                            } else if(strpos($item, 'maximum') !== false){
-                                if(strpos($item, 'rules_catagory_name') !== false)
+                            } else if (strpos($item, 'maximum') !== false) {
+                                if (strpos($item, 'rules_catagory_name') !== false)
                                     $errors[] = $rules_language->get('rules', 'catagory_name_maximum');
-
-                                else if(strpos($item, 'rules_catagory_icon') !== false)
+                                else if (strpos($item, 'rules_catagory_icon') !== false)
                                     $errors[] = $rules_language->get('rules', 'catagory_icon_maximum');
                             }
                         }
@@ -296,12 +290,12 @@ if(!isset($_GET['action'])){
             ]);
 
             $template_file = 'rules/rules_edit.tpl';
-        break;
+            break;
         case 'delete':
-            if(isset($_GET['id']) && is_numeric($_GET['id'])){
+            if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 try {
                     DB::getInstance()->delete('rules_catagories', ['id', '=', $_GET['id']]);
-                } catch(Exception $e){
+                } catch (Exception $e) {
                     die($e->getMessage());
                 }
 
@@ -309,11 +303,11 @@ if(!isset($_GET['action'])){
                 Redirect::to(URL::build('/panel/rules'));
                 die();
             }
-        break;
+            break;
         case 'new_button':
-            if(Input::exists()){
+            if (Input::exists()) {
                 $errors = [];
-                if(Token::check(Input::get('token'))){
+                if (Token::check(Input::get('token'))) {
                     $validation = Validate::check($_POST, [
                         'rules_button_name' => [
                             'required' => true,
@@ -327,7 +321,7 @@ if(!isset($_GET['action'])){
                         ]
                     ]);
 
-                    if($validation->passed()){
+                    if ($validation->passed()) {
                         // input into database
                         try {
                             DB::getInstance()->insert('rules_buttons', [
@@ -337,28 +331,25 @@ if(!isset($_GET['action'])){
                             Session::flash('staff_rules', $rules_language->get('rules', 'button_created_successfully'));
                             Redirect::to(URL::build('/panel/rules'));
                             die();
-                        } catch(Exception $e){
+                        } catch (Exception $e) {
                             $errors[] = $e->getMessage();
                         }
                     } else {
-                        foreach($validation->errors() as $item){
-                            if(strpos($item, 'is required') !== false){
-                                if(strpos($item, 'rules_button_name') !== false)
+                        foreach ($validation->errors() as $item) {
+                            if (strpos($item, 'is required') !== false) {
+                                if (strpos($item, 'rules_button_name') !== false)
                                     $errors[] = $rules_language->get('rules', 'button_name_required');
-
-                                else if(strpos($item, 'rules_button_link') !== false)
+                                else if (strpos($item, 'rules_button_link') !== false)
                                     $errors[] = $rules_language->get('rules', 'button_link_required');
-                            } else if(strpos($item, 'minimum') !== false){
-                                if(strpos($item, 'rules_button_name') !== false)
+                            } else if (strpos($item, 'minimum') !== false) {
+                                if (strpos($item, 'rules_button_name') !== false)
                                     $errors[] = $rules_language->get('rules', 'button_name_minimum');
-
-                                else if(strpos($item, 'rules_button_link') !== false)
+                                else if (strpos($item, 'rules_button_link') !== false)
                                     $errors[] = $rules_language->get('rules', 'button_link_minimum');
-                            } else if(strpos($item, 'maximum') !== false){
-                                if(strpos($item, 'rules_button_name') !== false)
+                            } else if (strpos($item, 'maximum') !== false) {
+                                if (strpos($item, 'rules_button_name') !== false)
                                     $errors[] = $rules_language->get('rules', 'button_name_maximum');
-
-                                else if(strpos($item, 'rules_button_link') !== false)
+                                else if (strpos($item, 'rules_button_link') !== false)
                                     $errors[] = $rules_language->get('rules', 'button_link_maximum');
                             }
                         }
@@ -377,22 +368,22 @@ if(!isset($_GET['action'])){
             ]);
 
             $template_file = 'rules/button_new.tpl';
-        break;
+            break;
         case 'edit_button':
-            if(!isset($_GET['id']) || !is_numeric($_GET['id'])){
+            if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
                 Redirect::to(URL::build('/panel/rules'));
                 die();
             }
             $button = DB::getInstance()->get('rules_buttons', ['id', '=', $_GET['id']])->results();
-            if(!count($button)){
+            if (!count($button)) {
                 Redirect::to(URL::build('/panel/rules'));
                 die();
             }
             $button = $button[0];
 
-            if(Input::exists()){
+            if (Input::exists()) {
                 $errors = [];
-                if(Token::check(Input::get('token'))){
+                if (Token::check(Input::get('token'))) {
                     $validation = Validate::check($_POST, [
                         'rules_button_name' => [
                             'required' => true,
@@ -406,7 +397,7 @@ if(!isset($_GET['action'])){
                         ]
                     ]);
 
-                    if($validation->passed()){
+                    if ($validation->passed()) {
                         try {
                             DB::getInstance()->update('rules_buttons', $button->id, [
                                 'name' => htmlspecialchars(Input::get('rules_button_name')),
@@ -415,28 +406,25 @@ if(!isset($_GET['action'])){
                             Session::flash('staff_rules', $rules_language->get('rules', 'button_updated_successfully'));
                             Redirect::to(URL::build('/panel/rules'));
                             die();
-                        } catch(Exception $e){
+                        } catch (Exception $e) {
                             $errors[] = $e->getMessage();
                         }
                     } else {
-                        foreach($validation->errors() as $item){
-                            if(strpos($item, 'is required') !== false){
-                                if(strpos($item, 'rules_button_name') !== false)
+                        foreach ($validation->errors() as $item) {
+                            if (strpos($item, 'is required') !== false) {
+                                if (strpos($item, 'rules_button_name') !== false)
                                     $errors[] = $rules_language->get('rules', 'button_name_required');
-
-                                else if(strpos($item, 'rules_button_link') !== false)
+                                else if (strpos($item, 'rules_button_link') !== false)
                                     $errors[] = $rules_language->get('rules', 'button_link_required');
-                            } else if(strpos($item, 'minimum') !== false){
-                                if(strpos($item, 'rules_button_name') !== false)
+                            } else if (strpos($item, 'minimum') !== false) {
+                                if (strpos($item, 'rules_button_name') !== false)
                                     $errors[] = $rules_language->get('rules', 'button_name_minimum');
-
-                                else if(strpos($item, 'rules_button_link') !== false)
+                                else if (strpos($item, 'rules_button_link') !== false)
                                     $errors[] = $rules_language->get('rules', 'button_link_minimum');
-                            } else if(strpos($item, 'maximum') !== false){
-                                if(strpos($item, 'rules_button_name') !== false)
+                            } else if (strpos($item, 'maximum') !== false) {
+                                if (strpos($item, 'rules_button_name') !== false)
                                     $errors[] = $rules_language->get('rules', 'button_name_maximum');
-
-                                else if(strpos($item, 'rules_button_link') !== false)
+                                else if (strpos($item, 'rules_button_link') !== false)
                                     $errors[] = $rules_language->get('rules', 'button_link_maximum');
                             }
                         }
@@ -457,12 +445,12 @@ if(!isset($_GET['action'])){
             ]);
 
             $template_file = 'rules/button_edit.tpl';
-        break;
+            break;
         case 'delete_button':
-            if(isset($_GET['id']) && is_numeric($_GET['id'])){
+            if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 try {
                     DB::getInstance()->delete('rules_buttons', ['id', '=', $_GET['id']]);
-                } catch(Exception $e){
+                } catch (Exception $e) {
                     die($e->getMessage());
                 }
 
@@ -470,26 +458,26 @@ if(!isset($_GET['action'])){
                 Redirect::to(URL::build('/panel/rules'));
                 die();
             }
-        break;
+            break;
         default:
             Redirect::to(URL::build('/panel/rules'));
             die();
-        break;
+            break;
     }
 }
 
 Module::loadPage($user, $pages, $cache, $smarty, [$navigation, $cc_nav, $staffcp_nav], $widgets, $template);
 
-if(Session::exists('staff_rules'))
+if (Session::exists('staff_rules'))
     $success = Session::flash('staff_rules');
 
-if(isset($success))
+if (isset($success))
     $smarty->assign([
         'SUCCESS' => $success,
         'SUCCESS_TITLE' => $language->get('general', 'success')
     ]);
 
-if(isset($errors) && count($errors))
+if (isset($errors) && count($errors))
     $smarty->assign([
         'ERRORS' => $errors,
         'ERRORS_TITLE' => $language->get('general', 'error')

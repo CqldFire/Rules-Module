@@ -16,9 +16,9 @@ $rules_message = $rules_message[0]->value;
 $catagories = DB::getInstance()->get("rules_catagories", ["id", "<>", 0])->results();
 
 $catagories_array = [];
-foreach($catagories as $catagory){
+foreach ($catagories as $catagory) {
     $catagories_array[] = [
-    'id' => Output::getClean($catagory->id),
+        'id' => Output::getClean($catagory->id),
         'name' => Output::getClean($catagory->name),
         'icon' => Output::getPurified(Output::getDecoded($catagory->icon)),
         'rules' => Output::getPurified(Output::getDecoded($catagory->rules))
@@ -28,9 +28,9 @@ foreach($catagories as $catagory){
 $buttons = DB::getInstance()->get("rules_buttons", ["id", "<>", 0])->results();
 
 $buttons_array = [];
-foreach($buttons as $button){
+foreach ($buttons as $button) {
     $buttons_array[] = [
-    'name' => Output::getClean($button->name),
+        'name' => Output::getClean($button->name),
         'link' => Output::getClean($button->link),
     ];
 }
